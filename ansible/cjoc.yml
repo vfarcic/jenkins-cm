@@ -1,0 +1,9 @@
+- hosts: cjoc
+  remote_user: vagrant
+  serial: 1
+  vars:
+    - cjoc_home: /var/lib/jenkins-oc
+  roles:
+    - java
+    - cjoc
+#    - docker

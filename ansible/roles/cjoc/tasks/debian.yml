@@ -1,0 +1,19 @@
+- name: Repository is added
+  apt_repository:
+    repo: deb http://nectar-downloads.cloudbees.com/nectar/debian binary/
+    repo: deb http://downloads.cloudbees.com/cjoc/latest/debian binary/
+  register: repository_result
+
+- name: Key is added
+  apt_key:
+    url: http://downloads.cloudbees.com/cjoc/latest/debian/jenkins-ci.org.key
+  when: repository_result|changed
+
+- name: Repositories are updated
+  apt:
+    update_cache: yes
+  when: repository_result|changed
+
+- name: Package is installed
+  apt:
+    name: jenkins-oc

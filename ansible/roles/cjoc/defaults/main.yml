@@ -1,0 +1,15 @@
+ports:
+  - 8888/tcp
+  - 9200/tcp
+  - 9300/tcp
+  - 48014/tcp
+  - 56736/tcp
+  - 56737/tcp
+  - 56738/tcp
+  - 56739/tcp
+  - 56740/tcp
+  - 35483/tcp
+
+configs:
+  - config.xml
+  - jgroups.xml

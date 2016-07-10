@@ -1,0 +1,28 @@
+- name: Packages are present
+  yum:
+    name: nfs-utils
+
+- name: Service is running
+  service:
+    name: nfs-server.service
+    enabled: yes
+    state: started
+
+- name: Directory is present
+  file:
+    path: "{{ nfs_dir }}"
+    state: directory
+    owner: nfsnobody
+    group: nfsnobody
+    mode: 0755
+
+- name: Export dir
+  lineinfile:
+    dest: /etc/exports
+    regexp: ^{{ nfs_dir }}
+    line: "{{ nfs_dir }}    {{ nfs_client_ip }}(rw,sync,no_root_squash,no_subtree_check)"
+  register: export_result
+
+- name: Export FS
+  shell: exportfs -a
+  when: export_result|changed

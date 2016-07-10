@@ -1,0 +1,28 @@
+- name: Packages are installed
+  yum:
+    name: wget
+
+- name: Is downloaded
+  shell: 'wget --no-cookies --no-check-certificate \
+    --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+    "http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jdk-8u66-linux-x64.tar.gz" \
+    -O /opt/jdk-8u66-linux-x64.tar.gz'
+  args:
+    creates: /opt/jdk-8u66-linux-x64.tar.gz
+
+- name: Unarchive
+  unarchive:
+    src: /opt/jdk-8u66-linux-x64.tar.gz
+    dest: /opt/
+    copy: no
+    creates: /opt/jdk1.8.0_66
+
+- name: correct java version selected
+  alternatives:
+    link: /usr/bin/{{ item }}
+    name: "{{ item }}"
+    path: /opt/jdk1.8.0_66/bin/{{ item }}
+  with_items:
+    - java
+    - jar
+    - javac

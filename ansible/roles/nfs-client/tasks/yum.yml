@@ -1,0 +1,21 @@
+- name: Packages are present
+  yum:
+    name: nfs-utils
+
+- name: Ensure rpcbind is running
+  service:
+    name: rpcbind
+    state: started
+    enabled: yes
+
+- name: Directory is present
+  file:
+    path: "{{ dest_nfs_dir }}"
+    state: directory
+
+- name: Directory is mounted
+  mount:
+    name: {{ dest_nfs_dir }}
+    src: "{{ nfs_server_ip }}:{{ src_nfs_dir }}"
+    fstype: nfs
+    state: mounted

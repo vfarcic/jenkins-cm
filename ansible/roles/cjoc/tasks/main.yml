@@ -1,0 +1,47 @@
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: yum.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Jenkins home is present
+  file:
+    path: "{{ cjoc_home }}"
+    state: directory
+    owner: jenkins-oc
+    group: jenkins-oc
+    mode: "0777"
+
+- name: vagrant user is added to the jenkins-oc group
+  user:
+    name: vagrant
+    group: jenkins-oc
+
+- name: jgroups are present
+  template:
+    src: "{{ item }}"
+    dest: "{{ cjoc_home }}/{{ item }}"
+    owner: jenkins-oc
+    group: jenkins-oc
+  with_items: "{{ configs }}"
+  when: install_result|changed
+
+- name: Update Jenkins home
+  lineinfile:
+    dest: /etc/sysconfig/jenkins-oc
+    regexp: ^JENKINS_HOME=
+    line: JENKINS_HOME="{{ cjoc_home }}"
+
+- name: License is present
+  copy:
+    src: license.xml
+    dest: "{{ cjoc_home }}/license.xml"
+  when: copy_license is defined
+
+- name: Service is running
+  service:
+    name: jenkins-oc
+    state: started
+
+- debug:
+    msg: "CloudBees Jenkins Operations Center is running. Please open http://{{ ansible_hostname }}:8888"

@@ -1,0 +1,14 @@
+- name: Firewalls are opened
+  firewalld:
+    port: "{{ cjoc_ha_port }}/tcp"
+    permanent: true
+    state: enabled
+  register: firewall_result
+
+- name: Firewall is reloaded
+  shell: firewall-cmd --reload
+  when: firewall_result|changed
+
+- name: Packages are present
+  yum:
+    name: haproxy

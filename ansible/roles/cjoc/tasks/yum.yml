@@ -1,0 +1,30 @@
+- name: Firewalls are opened
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items: "{{ ports }}"
+  register: firewall_result
+
+- name: Firewall is reloaded
+  shell: firewall-cmd --reload
+  when: firewall_result|changed
+
+- name: Packages are present
+  yum:
+    name: net-tools
+
+- name: Key is imported
+  rpm_key:
+    key: http://downloads.cloudbees.com/cjoc/latest/rpm/cloudbees.com.key
+
+- name: Repository is added
+  get_url:
+    url: http://downloads.cloudbees.com/cjoc/latest/rpm/jenkins-oc.repo
+    dest: /etc/yum.repos.d/jenkins-oc.repo
+
+- name: Package is installed
+  yum:
+    name: jenkins-oc
+    update_cache: yes
+  register: install_result

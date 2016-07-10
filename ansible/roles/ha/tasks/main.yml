@@ -1,0 +1,26 @@
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: yum.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Configuration is present
+  template:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  register: config_result
+
+- name: Service is running
+  service:
+    name: haproxy
+    state: started
+  register: service_result
+
+- name: Service is restarted
+  service:
+    name: haproxy
+    state: restarted
+  when: config_result|changed and not service_result|changed
+
+- debug:
+    msg: "HAProxy is running is running. Please open http://{{ ansible_hostname }}"

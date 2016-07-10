@@ -1,0 +1,9 @@
+- hosts: "{{ hosts_group }}"
+  remote_user: vagrant
+  serial: 1
+  vars:
+    - nfs_server_ip: 10.100.199.200
+    - src_nfs_dir: /var/nfs/jenkins
+    - dest_nfs_dir: /var/lib/jenkins
+  roles:
+    - nfs-client

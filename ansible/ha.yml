@@ -1,0 +1,11 @@
+- hosts: ha
+  remote_user: vagrant
+  serial: 1
+  vars:
+    - cjoc_ha_port: 80
+    - cjoc_port: 8888
+    - cjoc_ip_1: 192.168.0.1
+    - cjoc_ip_2: 192.168.0.2
+    - cjoc_jnlp_port: 48014
+  roles:
+    - ha
