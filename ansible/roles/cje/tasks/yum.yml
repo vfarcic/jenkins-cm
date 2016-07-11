@@ -1,0 +1,26 @@
+- name: Firewalls are opened
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items: "{{ ports }}"
+  register: firewall_result
+
+- name: Firewall is reloaded
+  shell: firewall-cmd --reload
+  when: firewall_result|changed
+
+- name: Package is downloaded
+  get_url:
+    url: http://nectar-downloads.cloudbees.com/nectar/rpm/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+  register: repository_result
+
+- name: Key is added
+  rpm_key:
+    key: http://nectar-downloads.cloudbees.com/nectar/rpm/cloudbees.com.key
+
+- name: Package is installed
+  yum:
+    name: jenkins
+    update_cache: yes

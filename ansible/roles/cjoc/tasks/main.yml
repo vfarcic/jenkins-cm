@@ -37,11 +37,19 @@
     src: license.xml
     dest: "{{ cjoc_home }}/license.xml"
   when: copy_license is defined
+  register: license_result
 
 - name: Service is running
   service:
     name: jenkins-oc
     state: started
+  register: service_result
+
+- name: Service is restarted
+  service:
+    name: jenkins
+    state: restarted
+  when: license_result|changed and not service_result|changeds
 
 - debug:
     msg: "CloudBees Jenkins Operations Center is running. Please open http://{{ ansible_hostname }}:8888"

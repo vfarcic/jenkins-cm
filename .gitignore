@@ -3,3 +3,4 @@
 /.vagrant
 /data
 license.xml
+*.retry

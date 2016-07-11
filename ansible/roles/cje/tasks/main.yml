@@ -1,0 +1,39 @@
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: yum.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Update Jenkins home
+  lineinfile:
+    dest: /etc/sysconfig/jenkins
+    regexp: ^JENKINS_HOME=
+    line: JENKINS_HOME="{{ jenkins_home }}"
+
+- name: Update Jenkins port
+  lineinfile:
+    dest: /etc/sysconfig/jenkins
+    regexp: ^JENKINS_PORT=
+    line: JENKINS_PORT="{{ jenkins_port }}"
+
+- name: License is present
+  copy:
+    src: license.xml
+    dest: "{{ jenkins_home }}/license.xml"
+  when: copy_license is defined
+  register: license_result
+
+- name: Service is running
+  service:
+    name: jenkins
+    state: started
+  register: service_result
+
+- name: Service is restarted
+  service:
+    name: jenkins
+    state: restarted
+  when: license_result|changed and not service_result|changed
+
+- debug:
+    msg: "CloudBees Jenkins Enterprise is running. Please open http://{{ ansible_hostname }}:8080"
