@@ -1,22 +1,67 @@
 CJE
 ===
 
-Vagrant CentOS
---------------
+Vagrant - CentOS - Package
+--------------------------
+
+### Create VM
 
 ```bash
 vagrant up cje-centos-1 cje-centos-2
+```
 
+### Provision
+
+```bash
 ansible-playbook ansible/cje.yml \
     -i ansible/hosts/centos \
     --extra-vars "copy_license=yes"
 ```
 
+AWS - CentOS - Package
+----------------------
+
+### Create & Provision AMI
+
+```bash
+export SSH_USER=devops
+
+export SSH_PASS=devops
+
+export AWS_ACCESS_KEY=<ACCESS KEY ID>
+
+export AWS_SECRET_KEY=<SECRET ACCESS KEY>
+
+packer validate \
+    -var aws_access_key=$AWS_ACCESS_KEY \
+    -var aws_secret_key=$AWS_SECRET_KEY \
+    packer-cje-centos.json
+
+packer build -machine-readable \
+    -var aws_access_key=$AWS_ACCESS_KEY \
+    -var aws_secret_key=$AWS_SECRET_KEY \
+    packer-cje-centos.json | tee packer-cje-centos.log
+
+export AMI_ID=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
+
+terraform apply \
+    -var ami_id=$AMI_ID \
+    -var aws_access_key=$AWS_ACCESS_KEY \
+    -var aws_secret_key=$AWS_SECRET_KEY \
+    -var ssh_user=$SSH_USER \
+    -var ssh_pass=$SSH_PASS
+```
+
+### Provision
+
+```bash
+```
+
 CJOC
 ====
 
-Vagrant CentOS
---------------
+Vagrant - CentOS - Package
+--------------------------
 
 * Make sure that your license is stored in the ansible/roles/cjoc/files/license.xml file
 
@@ -37,8 +82,8 @@ ansible-playbook ansible/cjoc.yml \
 HA
 ==
 
-Vagrant CentOS
---------------
+Vagrant - CentOS - Package
+--------------------------
 
 ### Note: HA does not work with CJEs and CJOCs running inside Vagrant
 

@@ -1,3 +1,8 @@
+- name: NFS is present
+  yum:
+    name: firewalld
+  when: not ignore_firewall is defined
+
 - name: Firewalls are opened
   firewalld:
     port: "{{ item }}"
@@ -5,10 +10,11 @@
     state: enabled
   with_items: "{{ ports }}"
   register: firewall_result
+  when: not ignore_firewall is defined
 
 - name: Firewall is reloaded
   shell: firewall-cmd --reload
-  when: firewall_result|changed
+  when: not c is defined and firewall_result|changed
 
 - name: Package is downloaded
   get_url:

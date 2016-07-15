@@ -1,0 +1,32 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "ami_id": "ami-6d1c2007"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "{{user `ami_id`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "centos",
+    "ami_name": "cje-centos",
+    "ssh_pty" : "true",
+    "force_deregister": true
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo yum install -y epel-release",
+      "sudo yum install -y ansible"
+    ]
+  }, {
+    "type": "ansible-local",
+    "playbook_file": "../ansible/cje-local.yml",
+    "playbook_dir": "../ansible",
+    "extra_arguments": "--extra-vars \"copy_license=yes ignore_firewall=yes\""
+  }]
+}
