@@ -19,7 +19,8 @@
 - name: Home is present
   file:
     path: "{{ jenkins_home }}"
-    mode: 0777
+    owner: jenkins
+    group: jenkins
     state: directory
 
 - name: License is present

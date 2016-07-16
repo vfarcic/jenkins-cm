@@ -2,13 +2,44 @@ AWS - CentOS - Package
 ======================
 
 ```bash
-export SSH_USER=devops
+export TF_VAR_ssh_user=devops
 
-export SSH_PASS=devops
+export TF_VAR_ssh_pass=devops
 
-export AWS_ACCESS_KEY=<ACCESS KEY ID>
+export TF_VAR_aws_access_key=<ACCESS KEY ID>
 
-export AWS_SECRET_KEY=<SECRET ACCESS KEY>
+export TF_VAR_aws_secret_key=<SECRET ACCESS KEY>
+```
+
+All (HA Proxy + 2 x CJE in HA + 2 x CJOC in HA)
+-----------------------------------------------
+
+### Create & Provision AMIs
+
+```bash
+packer build -machine-readable packer-cje-centos.json | tee packer-cje-centos.log
+
+packer build -machine-readable packer-cjoc-centos.json | tee packer-cjoc-centos.log
+
+packer build -machine-readable packer-ha-centos.json | tee packer-ha-centos.log
+```
+
+### Create instances
+
+```bash
+export TF_VAR_cje_ami_id=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
+
+export TF_VAR_cjoc_ami_id=$(grep 'artifact,0,id' packer-cjoc-centos.log | cut -d, -f6 | cut -d: -f2)
+
+export TF_VAR_ha_ami_id=$(grep 'artifact,0,id' packer-ha-centos.log | cut -d, -f6 | cut -d: -f2)
+
+terraform apply
+```
+
+### Destroy
+
+```bash
+terraform destroy -force
 ```
 
 CJE
@@ -19,33 +50,62 @@ CJE
 ### Create & Provision AMI
 
 ```bash
-packer build -machine-readable \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY \
-    packer-cje-centos.json | tee packer-cje-centos.log
+packer build -machine-readable packer-cje-centos.json | tee packer-cje-centos.log
 ```
 
 ### Create instances
 
 ```bash
-export AMI_ID=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
+export TF_VAR_cje_ami_id=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
 
-terraform apply \
-    -target aws_instance.default \
-    -var ami_id=$AMI_ID \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY \
-    -var ssh_user=$SSH_USER \
-    -var ssh_pass=$SSH_PASS
+terraform apply -target aws_instance.cje
+```
+
+### SSH
+
+```bash
+ssh $TF_VAR_ssh_user@$(terraform output cje_public_ip_0)
+
+ssh $TF_VAR_ssh_user@$(terraform output cje_public_ip_1)
 ```
 
 ### Destroy
 
 ```bash
-terraform destroy -force \
-    -target aws_instance.default \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY
+terraform destroy -force -target aws_instance.cje
+```
+
+CJOC
+----
+
+* Make sure that your license is stored in the ansible/roles/cjoc/files/license.xml file
+
+### Create & Provision AMI
+
+```bash
+packer build -machine-readable packer-cjoc-centos.json | tee packer-cjoc-centos.log
+```
+
+### Create instances
+
+```bash
+export TF_VAR_cjoc_ami_id=$(grep 'artifact,0,id' packer-cjoc-centos.log | cut -d, -f6 | cut -d: -f2)
+
+terraform apply -target aws_instance.cjoc
+```
+
+### SSH
+
+```bash
+ssh $TF_VAR_ssh_user@$(terraform output cjoc_public_ip_0)
+
+ssh $TF_VAR_ssh_user@$(terraform output cjoc_public_ip_1)
+```
+
+### Destroy
+
+```bash
+terraform destroy -force -target aws_instance.cjoc
 ```
 
 HA
@@ -54,64 +114,27 @@ HA
 ### Create & Provision AMI
 
 ```bash
-packer build -machine-readable \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY \
-    packer-ha-centos.json | tee packer-ha-centos.log
+packer build -machine-readable packer-ha-centos.json | tee packer-ha-centos.log
 ```
 
 ### Create instances
 
 ```bash
-export HA_AMI_ID=$(grep 'artifact,0,id' packer-ha-centos.log | cut -d, -f6 | cut -d: -f2)
+export TF_VAR_ha_ami_id=$(grep 'artifact,0,id' packer-ha-centos.log | cut -d, -f6 | cut -d: -f2)
 
-terraform apply \
-    -target aws_instance.ha \
-    -var ha_ami_id=$HA_AMI_ID \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY \
-    -var ssh_user=$SSH_USER \
-    -var ssh_pass=$SSH_PASS
+terraform apply -target aws_instance.ha
+```
 
-ssh $SSH_USER@$(terraform output ha_public_ip)
+### SSH
+
+```bash
+ssh $TF_VAR_ssh_user@$(terraform output ha_public_ip)
 ```
 
 ### Destroy a single instance
 
 ```bash
-terraform destroy -force \
-    -target aws_instance.ha \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY
-```
-
-All (HA Proxy + 2 x CJE in HA + 2 x CJOC in HA)
------------------------------------------------
-
-### Create
-
-* Create AMIs with Packer
-
-```bash
-export AMI_ID=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
-
-export HA_AMI=$(grep 'artifact,0,id' packer-ha-centos.log | cut -d, -f6 | cut -d: -f2)
-
-terraform apply \
-    -var ami_id=$AMI_ID \
-    -var ha_ami_id=$HA_AMI_ID \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY \
-    -var ssh_user=$SSH_USER \
-    -var ssh_pass=$SSH_PASS
-```
-
-### Destroy
-
-```bash
-terraform destroy -force \
-    -var aws_access_key=$AWS_ACCESS_KEY \
-    -var aws_secret_key=$AWS_SECRET_KEY
+terraform destroy -force -target aws_instance.ha
 ```
 
 Vagrant - CentOS - Package

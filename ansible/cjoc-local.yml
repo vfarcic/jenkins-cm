@@ -1,0 +1,9 @@
+- hosts: localhost
+  vars:
+    - cjoc_home: /var/lib/jenkins-oc
+  roles:
+    - common
+    - java
+    - cjoc
+    - users
+    - nfs

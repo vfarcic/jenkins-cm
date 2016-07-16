@@ -28,23 +28,23 @@ defaults
         timeout         check           500
         default-server  inter 5s downinter 500 rise 1 fall 1
 
-listen cjoc 0.0.0.0:{{ cjoc_ha_port }}
+listen cjoc 0.0.0.0:${cjoc_ha_port}
   balance roundrobin
   reqadd    X-Forwarded-Proto:\ http
   option    forwardfor except 127.0.0.0/8
   option    httplog
   option    httpchk HEAD /ha/health-check
-  server    cjoc_1 {{ cjoc_ip_1 }}:{{ cjoc_port }} check
-  server    cjoc_2 {{ cjoc_ip_2 }}:{{ cjoc_port }} check
+  server    cjoc_0 ${cjoc_ip_0}:${cjoc_port} check
+  server    cjoc_1 ${cjoc_ip_1}:${cjoc_port} check
 
-listen cje 0.0.0.0:{{ cje_ha_port }}
+listen cje 0.0.0.0:${cje_ha_port}
   balance roundrobin
   reqadd    X-Forwarded-Proto:\ http
   option    forwardfor except 127.0.0.0/8
   option    httplog
   option    httpchk HEAD /ha/health-check
-  server    alpha {{ cje_ip_1 }}:{{ cje_port }} check
-  server    bravo {{ cje_ip_2 }}:{{ cje_port }} check
+  server    alpha ${cje_ip_0}:${cje_port} check
+  server    bravo ${cje_ip_1}:${cje_port} check
 
 # listen jnlp 0.0.0.0:10001
 #   mode      tcp
@@ -68,7 +68,7 @@ listen cje 0.0.0.0:{{ cje_ha_port }}
 
 
 # monitor port
-listen status
-bind 0.0.0.0:8081
-  stats enable
-  stats uri /
+#listen status
+#bind 0.0.0.0:8081
+#  stats enable
+#  stats uri /

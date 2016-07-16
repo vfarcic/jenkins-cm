@@ -1,11 +1,11 @@
-resource "aws_security_group" "cje" {
-  name = "cje"
+resource "aws_security_group" "cjoc" {
+  name = "cjoc"
   description = "Internet traffic"
   vpc_id      = "${aws_vpc.cjp.id}"
 
   ingress {
-    from_port = 8080
-    to_port = 8080
+    from_port = 8888
+    to_port = 8888
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -19,17 +19,17 @@ resource "aws_security_group" "cje" {
 
 }
 
-resource "aws_instance" "cje" {
-  count = "${var.cje.count}"
-  ami = "${var.cje_ami_id}"
-  instance_type = "${var.cje.instance_type}"
+resource "aws_instance" "cjoc" {
+  count = "${var.cjoc.count}"
+  ami = "${var.cjoc_ami_id}"
+  instance_type = "${var.cjoc.instance_type}"
   tags {
-    Name = "cje"
+    Name = "cjoc"
   }
   subnet_id = "${aws_subnet.cjp.id}"
   vpc_security_group_ids = [
     "${aws_security_group.ssh.id}",
-    "${aws_security_group.cje.id}",
+    "${aws_security_group.cjoc.id}",
     "${aws_vpc.cjp.default_security_group_id}"
   ]
   depends_on = ["aws_route.internet_access", "aws_efs_mount_target.cjp"]
@@ -39,20 +39,20 @@ resource "aws_instance" "cje" {
       password = "${var.ssh_pass}"
     }
     inline = [
-      "sudo cp /data/jenkins/license.xml /tmp/license.xml",
+      "sudo cp /data/jenkins-oc/license.xml /tmp/license.xml",
       "sudo mount -t nfs4 -o nfsvers=4.1 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).${aws_efs_file_system.cjp.id}.efs.${var.region}.amazonaws.com:/ /data/",
-      "sudo mkdir -p /data/jenkins",
-      "sudo chown jenkins:jenkins /data/jenkins/",
-      "sudo mv /tmp/license.xml /data/jenkins/license.xml",
-      "sudo service jenkins restart"
+      "sudo mkdir -p /data/jenkins-oc",
+      "sudo chown jenkins-oc:jenkins-oc /data/jenkins-oc/",
+      "sudo mv /tmp/license.xml /data/jenkins-oc/license.xml",
+      "sudo service jenkins-oc restart"
     ]
   }
 }
 
-output "cje_public_ip_0" {
-  value = "${aws_instance.cje.0.public_ip}"
+output "cjoc_public_ip_0" {
+  value = "${aws_instance.cjoc.0.public_ip}"
 }
 
-output "cje_public_ip_1" {
-  value = "${aws_instance.cje.1.public_ip}"
+output "cjoc_public_ip_1" {
+  value = "${aws_instance.cjoc.1.public_ip}"
 }

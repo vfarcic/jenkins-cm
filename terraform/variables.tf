@@ -1,6 +1,9 @@
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-variable "ami_id" {
+variable "cje_ami_id" {
+  default = "unknown"
+}
+variable "cjoc_ami_id" {
   default = "unknown"
 }
 variable "ha_ami_id" {
@@ -9,11 +12,26 @@ variable "ha_ami_id" {
 variable "ssh_user" {}
 variable "ssh_pass" {}
 variable "region" {
-  default = "us-east-1"
+  default = "us-west-2"
 }
-variable "instance_type" {
-  default = "t1.micro"
+variable "ha" {
+  default = {
+    instance_type = "t1.micro"
+    cjoc_port = "80"
+    cje_port = "8080"
+  }
 }
-variable "count" {
-  default = "2"
+variable "cjoc" {
+  default = {
+    instance_type = "t1.micro"
+    count = "2"
+    port = "8888"
+  }
+}
+variable "cje" {
+  default = {
+    instance_type = "t1.micro"
+    count = "2"
+    port = "8080"
+  }
 }

@@ -49,7 +49,8 @@
   service:
     name: jenkins
     state: restarted
-  when: license_result|changed and not service_result|changeds
+  when: service_result is defined and license_result|changed and not service_result|changed
 
 - debug:
     msg: "CloudBees Jenkins Operations Center is running. Please open http://{{ ansible_hostname }}:8888"
+  when: not ignore_service_run is defined
