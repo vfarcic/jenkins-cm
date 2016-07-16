@@ -1,14 +1,14 @@
-- name: Firewalls are opened
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items: "{{ ports }}"
-  register: firewall_result
-
-- name: Firewall is reloaded
-  shell: firewall-cmd --reload
-  when: firewall_result|changed
+#- name: Ports are open
+#  iptables:
+#    chain: INPUT
+#    source: 0.0.0.0/0
+#    destination: 0.0.0.0/0
+#    protocol: tcp
+#    destination_port: "{{ item }}"
+#    match: state
+#    ctstate: NEW
+#    jump: ACCEPT
+#  with_items: ports
 
 - name: Packages are present
   yum:

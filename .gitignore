@@ -4,3 +4,6 @@
 /data
 license.xml
 *.retry
+*.log
+*.pem
+*.tfstate*

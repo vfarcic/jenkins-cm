@@ -1,10 +1,9 @@
 - hosts: localhost
-  remote_user: vagrant
-  serial: 1
   vars:
     - jenkins_home: /var/lib/jenkins/
     - jenkins_port: 8080
   roles:
+    - common
     - java
     - cje
     - users

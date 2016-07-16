@@ -1,7 +1,0 @@
-- hosts: nfs-server
-  remote_user: vagrant
-  serial: 1
-  vars:
-    - nfs_dir: /var/nfs/jenkins
-  roles:
-    - nfs-server

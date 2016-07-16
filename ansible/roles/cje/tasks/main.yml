@@ -16,6 +16,12 @@
     regexp: ^JENKINS_PORT=
     line: JENKINS_PORT="{{ jenkins_port }}"
 
+- name: Home is present
+  file:
+    path: "{{ jenkins_home }}"
+    mode: 0777
+    state: directory
+
 - name: License is present
   copy:
     src: license.xml
@@ -28,12 +34,14 @@
     name: jenkins
     state: started
   register: service_result
+  when: not ignore_service_run is defined
 
 - name: Service is restarted
   service:
     name: jenkins
     state: restarted
-  when: license_result|changed and not service_result|changed
+  when: service_result is defined and license_result|changed and not service_result|changed
 
 - debug:
     msg: "CloudBees Jenkins Enterprise is running. Please open http://{{ ansible_hostname }}:8080"
+  when: not ignore_service_run is defined

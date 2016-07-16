@@ -1,13 +1,13 @@
-- name: Firewalls are opened
-  firewalld:
-    port: "{{ cjoc_ha_port }}/tcp"
-    permanent: true
-    state: enabled
-  register: firewall_result
-
-- name: Firewall is reloaded
-  shell: firewall-cmd --reload
-  when: firewall_result|changed
+#- name: Ports are open
+#  iptables:
+#    chain: INPUT
+#    source: 0.0.0.0/0
+#    destination: 0.0.0.0/0
+#    protocol: tcp
+#    destination_port: 80
+#    match: state
+#    ctstate: NEW
+#    jump: ACCEPT
 
 - name: Packages are present
   yum:

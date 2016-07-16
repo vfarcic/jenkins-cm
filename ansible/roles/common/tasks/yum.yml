@@ -1,0 +1,6 @@
+- name: Disable firewall
+  command: chkconfig iptables off
+
+- name: libselinux is present
+  yum:
+    name: libselinux-python

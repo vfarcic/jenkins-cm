@@ -1,6 +1,3 @@
 - name: NFS is present
   yum:
-    name: "{{ item }}"
-  with_items:
-    - nfs-utils
-    - nfs-utils-lib
+    name: nfs-utils
