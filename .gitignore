@@ -7,3 +7,4 @@ license.xml
 *.log
 *.pem
 *.tfstate*
+secret*

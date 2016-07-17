@@ -1,0 +1,6 @@
+- hosts: localhost
+  roles:
+    - common
+    - java
+    - agent
+    - users

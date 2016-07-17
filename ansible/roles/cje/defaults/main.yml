@@ -1,3 +1,6 @@
 ports:
   - 8080/tcp
   - 48014/tcp
+
+plugins:
+  - plugins

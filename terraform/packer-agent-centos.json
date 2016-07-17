@@ -12,7 +12,7 @@
     "source_ami": "{{user `ami_id`}}",
     "instance_type": "t1.micro",
     "ssh_username": "root",
-    "ami_name": "cje-centos",
+    "ami_name": "agent-centos",
     "ssh_pty" : "true",
     "force_deregister": true
   }],
@@ -25,8 +25,7 @@
     ]
   }, {
     "type": "ansible-local",
-    "playbook_file": "../ansible/cje-local.yml",
-    "playbook_dir": "../ansible",
-    "extra_arguments": "--extra-vars \"copy_license=yes jenkins_home=/data/jenkins\""
+    "playbook_file": "../ansible/agent-local.yml",
+    "playbook_dir": "../ansible"
   }]
 }

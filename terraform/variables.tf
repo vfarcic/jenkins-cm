@@ -9,6 +9,9 @@ variable "cjoc_ami_id" {
 variable "ha_ami_id" {
   default = "unknown"
 }
+variable "agent_ami_id" {
+  default = "unknown"
+}
 variable "ssh_user" {}
 variable "ssh_pass" {}
 variable "region" {
@@ -31,7 +34,16 @@ variable "cjoc" {
 variable "cje" {
   default = {
     instance_type = "t1.micro"
-    count = "2"
+    count = "1"
     port = "8080"
+  }
+}
+
+variable "agent" {
+  default = {
+    instance_type = "t1.micro"
+    count = "1"
+    port = "8080"
+    executors = "2"
   }
 }
