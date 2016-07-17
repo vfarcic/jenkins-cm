@@ -21,6 +21,3 @@
     name: haproxy
     state: restarted
   when: config_result|changed and not service_result|changed
-
-- debug:
-    msg: "HAProxy is running is running. Please open http://{{ ansible_hostname }}"

@@ -38,29 +38,11 @@
   register: service_result
   when: not ignore_service_run is defined
 
-- pause: seconds=6
-  when: service_result|changed
-  tags: [jenkins]
-
-- name: Plugins are installed
-  shell: "curl -X POST \
-    -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
-    --header 'Content-Type: text/xml' \
-    http://localhost:8080/pluginManager/installNecessaryPlugins"
-  args:
-    creates: "{{ jenkins_home }}/plugins/{{ item }}"
-  with_items: "{{ plugins }}"
-  register: plugins_result
-
-- wait_for:
-    path: "{{ jenkins_home }}/plugins/{{ item }}"
-  with_items: "{{ plugins }}"
-
 - name: Service is restarted
   service:
     name: jenkins
     state: restarted
-  when: plugins_result|changed
+  when: service_result is defined and license_result|changed and not service_result|changed
 
 - debug:
     msg: "CloudBees Jenkins Enterprise is running. Please open http://{{ ansible_hostname }}:8080"

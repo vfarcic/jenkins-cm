@@ -3,4 +3,4 @@ ports:
   - 48014/tcp
 
 plugins:
-  - plugins
+  - swarm

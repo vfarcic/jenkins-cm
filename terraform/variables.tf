@@ -43,7 +43,7 @@ variable "agent" {
   default = {
     instance_type = "t1.micro"
     count = "2"
-    port = "8080"
+    jnlp_port = "35464"
     executors = "2"
   }
 }

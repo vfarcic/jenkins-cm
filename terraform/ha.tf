@@ -25,6 +25,13 @@ resource "aws_security_group" "ha" {
   }
 
   ingress {
+    from_port = 10001
+    to_port = 10001
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port = 35464
     to_port = 35464
     protocol = "tcp"
@@ -76,6 +83,7 @@ resource "template_file" "ha" {
     cje_ip_0     = "${aws_instance.cje.0.private_ip}"
     cje_ip_1     = "${aws_instance.cje.1.private_ip}"
     cje_port     = "${var.cje.port}"
+    jnlp_port    = "${var.agent.jnlp_port}"
   }
 }
 

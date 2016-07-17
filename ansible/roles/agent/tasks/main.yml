@@ -2,4 +2,4 @@
   get_url:
     url: http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.1/swarm-client-2.1-jar-with-dependencies.jar
     dest: /etc/swarm-client-jar-with-dependencies.jar
-    mode: 0440
+    mode: 0444
