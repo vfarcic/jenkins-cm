@@ -65,7 +65,7 @@ resource "aws_instance" "ha" {
 }
 
 resource "template_file" "ha" {
-  template = "${file("haproxy.cfg")}"
+  template = "${file("conf/haproxy.cfg")}"
 
   vars {
     cjoc_ha_port = "${var.ha.cjoc_port}"
@@ -81,4 +81,8 @@ resource "template_file" "ha" {
 
 output "ha_public_ip" {
   value = "${aws_instance.ha.public_ip}"
+}
+
+output "ha_private_ip" {
+  value = "${aws_instance.ha.private_ip}"
 }

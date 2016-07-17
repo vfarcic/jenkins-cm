@@ -21,6 +21,7 @@
     path: "{{ jenkins_home }}"
     owner: jenkins
     group: jenkins
+    mode: "0777"
     state: directory
 
 - name: License is present
@@ -37,23 +38,23 @@
   register: service_result
   when: not ignore_service_run is defined
 
-- pause: seconds=60
+- pause: seconds=120
   when: service_result|changed
   tags: [jenkins]
 
 - name: Plugins are installed
   shell: "curl -X POST \
-    -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
+    -d '<jenkins><install plugin="{{ item }}@latest" /></jenkins>' \
     --header 'Content-Type: text/xml' \
-    http://{{ ip }}:8080/pluginManager/installNecessaryPlugins"
+    http://localhost:8080/pluginManager/installNecessaryPlugins"
   args:
-    creates: /data/jenkins/plugins/{{ item }}
-  with_items: plugins
+    creates: "{{ jenkins_home }}/plugins/{{ item }}"
+  with_items: "{{ plugins }}"
   register: plugins_result
 
 - wait_for:
     path: "{{ jenkins_home }}/plugins/{{ item }}"
-  with_items: plugins
+  with_items: "{{ plugins }}"
 
 - name: Service is restarted
   service:

@@ -34,7 +34,7 @@ variable "cjoc" {
 variable "cje" {
   default = {
     instance_type = "t1.micro"
-    count = "1"
+    count = "2"
     port = "8080"
   }
 }
@@ -42,7 +42,7 @@ variable "cje" {
 variable "agent" {
   default = {
     instance_type = "t1.micro"
-    count = "1"
+    count = "2"
     port = "8080"
     executors = "2"
   }

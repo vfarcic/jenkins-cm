@@ -22,6 +22,8 @@ packer build -machine-readable packer-cje-centos.json | tee packer-cje-centos.lo
 packer build -machine-readable packer-cjoc-centos.json | tee packer-cjoc-centos.log
 
 packer build -machine-readable packer-ha-centos.json | tee packer-ha-centos.log
+
+packer build -machine-readable packer-agent-centos.json | tee packer-agent-centos.log
 ```
 
 ### Create instances
@@ -32,6 +34,8 @@ export TF_VAR_cje_ami_id=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, 
 export TF_VAR_cjoc_ami_id=$(grep 'artifact,0,id' packer-cjoc-centos.log | cut -d, -f6 | cut -d: -f2)
 
 export TF_VAR_ha_ami_id=$(grep 'artifact,0,id' packer-ha-centos.log | cut -d, -f6 | cut -d: -f2)
+
+export TF_VAR_agent_ami_id=$(grep 'artifact,0,id' packer-agent-centos.log | cut -d, -f6 | cut -d: -f2)
 
 terraform apply
 ```
