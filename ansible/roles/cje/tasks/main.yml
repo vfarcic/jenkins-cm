@@ -38,13 +38,13 @@
   register: service_result
   when: not ignore_service_run is defined
 
-- pause: seconds=120
+- pause: seconds=6
   when: service_result|changed
   tags: [jenkins]
 
 - name: Plugins are installed
   shell: "curl -X POST \
-    -d '<jenkins><install plugin="{{ item }}@latest" /></jenkins>' \
+    -d '<jenkins><install plugin=\"{{ item }}@latest\" /></jenkins>' \
     --header 'Content-Type: text/xml' \
     http://localhost:8080/pluginManager/installNecessaryPlugins"
   args:
