@@ -26,9 +26,10 @@ variable "ha" {
 }
 variable "cjoc" {
   default = {
-    instance_type = "m3.medium"
-    count = "2"
-    port = "8888"
+    instance_type      = "m3.medium"
+    count              = "2"
+    port               = "8888"
+    client_master_port = "53624"
   }
 }
 variable "cje" {

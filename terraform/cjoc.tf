@@ -4,15 +4,22 @@ resource "aws_security_group" "cjoc" {
   vpc_id      = "${aws_vpc.cjp.id}"
 
   ingress {
-    from_port = 8888
-    to_port = 8888
+    from_port = "${var.cjoc.port}"
+    to_port = "${var.cjoc.port}"
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port = 35464
-    to_port = 35464
+    from_port = "${var.agent.jnlp_port}"
+    to_port = "${var.agent.jnlp_port}"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = "${var.cjoc.client_master_port}"
+    to_port = "${var.cjoc.client_master_port}"
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

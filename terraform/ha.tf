@@ -75,15 +75,16 @@ resource "template_file" "ha" {
   template = "${file("conf/haproxy.cfg")}"
 
   vars {
-    cjoc_ha_port = "${var.ha.cjoc_port}"
-    cjoc_ip_0    = "${aws_instance.cjoc.0.private_ip}"
-    cjoc_ip_1    = "${aws_instance.cjoc.1.private_ip}"
-    cjoc_port    = "${var.cjoc.port}"
-    cje_ha_port  = "${var.ha.cje_port}"
-    cje_ip_0     = "${aws_instance.cje.0.private_ip}"
-    cje_ip_1     = "${aws_instance.cje.1.private_ip}"
-    cje_port     = "${var.cje.port}"
-    jnlp_port    = "${var.agent.jnlp_port}"
+    cjoc_ha_port       = "${var.ha.cjoc_port}"
+    cjoc_ip_0          = "${aws_instance.cjoc.0.private_ip}"
+    cjoc_ip_1          = "${aws_instance.cjoc.1.private_ip}"
+    cjoc_port          = "${var.cjoc.port}"
+    cje_ha_port        = "${var.ha.cje_port}"
+    cje_ip_0           = "${aws_instance.cje.0.private_ip}"
+    cje_ip_1           = "${aws_instance.cje.1.private_ip}"
+    cje_port           = "${var.cje.port}"
+    jnlp_port          = "${var.agent.jnlp_port}"
+    client_master_port = "${var.cjoc.client_master_port}"
   }
 }
 
