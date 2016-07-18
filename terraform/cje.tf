@@ -47,13 +47,13 @@ resource "aws_instance" "cje" {
     }
     inline = [
       "sudo service jenkins stop",
-      "sudo cp /data/jenkins/license.xml /tmp/license.xml",
+      "sudo cp /data/jenkins/{license.xml,config.xml} /tmp/",
       "sudo mount -t nfs4 -o nfsvers=4.1 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).${aws_efs_file_system.cjp.id}.efs.${var.region}.amazonaws.com:/ /data/",
       "sudo mkdir -p /data/jenkins/plugins",
       "sudo wget https://updates.jenkins-ci.org/latest/swarm.hpi -O /data/jenkins/plugins/swarm.hpi",
+      "sudo mv /tmp/license.xml /tmp/config.xml /data/jenkins/",
       "sudo chown -R jenkins:jenkins /data/jenkins/",
-      "sudo mv /tmp/license.xml /data/jenkins/license.xml",
-      "sudo service jenkins restart"
+      "sudo service jenkins start"
     ]
   }
 }

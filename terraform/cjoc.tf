@@ -39,12 +39,13 @@ resource "aws_instance" "cjoc" {
       password = "${var.ssh_pass}"
     }
     inline = [
+      "sudo service jenkins-oc stop",
       "sudo cp /data/jenkins-oc/license.xml /tmp/license.xml",
       "sudo mount -t nfs4 -o nfsvers=4.1 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).${aws_efs_file_system.cjp.id}.efs.${var.region}.amazonaws.com:/ /data/",
       "sudo mkdir -p /data/jenkins-oc",
-      "sudo chown jenkins-oc:jenkins-oc /data/jenkins-oc/",
       "sudo mv /tmp/license.xml /data/jenkins-oc/license.xml",
-      "sudo service jenkins-oc restart"
+      "sudo chown jenkins-oc:jenkins-oc /data/jenkins-oc/",
+      "sudo service jenkins-oc start"
     ]
   }
 }

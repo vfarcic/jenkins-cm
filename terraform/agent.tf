@@ -16,7 +16,8 @@ resource "aws_instance" "agent" {
       password = "${var.ssh_pass}"
     }
     inline = [
-      "nohup java -jar /etc/swarm-client-jar-with-dependencies.jar -executors ${var.agent.executors} -master http://${aws_instance.ha.private_ip}:${var.ha.cje_port} -labels \"centos java\" >/tmp/jenkins-agent.log 2>&1 &"
+      "nohup java -jar /etc/swarm-client-jar-with-dependencies.jar -executors ${var.agent.executors} -master http://${aws_instance.ha.private_ip}:${var.ha.cje_port} >/tmp/jenkins-agent.log 2>&1 &",
+      "sleep 5"
     ]
   }
 }

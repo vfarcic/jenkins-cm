@@ -28,8 +28,18 @@
   copy:
     src: license.xml
     dest: "{{ jenkins_home }}/license.xml"
+    owner: jenkins
+    group: jenkins
   when: copy_license is defined
   register: license_result
+
+- name: Config is present
+  copy:
+    src: config.xml
+    dest: "{{ jenkins_home }}/config.xml"
+    owner: jenkins
+    group: jenkins
+  register: config_result
 
 - name: Service is running
   service:
@@ -42,7 +52,7 @@
   service:
     name: jenkins
     state: restarted
-  when: service_result is defined and license_result|changed and not service_result|changed
+  when: service_result is defined and (license_result|changed or config_result|changed) and not service_result|changed
 
 - debug:
     msg: "CloudBees Jenkins Enterprise is running. Please open http://{{ ansible_hostname }}:8080"
