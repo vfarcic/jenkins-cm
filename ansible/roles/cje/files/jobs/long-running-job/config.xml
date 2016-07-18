@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<com.cloudbees.jenkins.plugins.longrunning.LongRunningProject plugin="cloudbees-long-running-build@1.9">
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <com.cloudbees.plugins.deployer.DeployNowJobProperty plugin="deployer-framework@1.1">
+            <oneClickDeploy>false</oneClickDeploy>
+            <hosts>
+                <com.cloudbees.plugins.deployer.impl.amazon.HostImpl plugin="cloudbees-aws-deployer@1.15">
+                    <targets class="java.util.Collections$UnmodifiableRandomAccessList" resolves-to="java.util.Collections$UnmodifiableList">
+                        <c class="list"/>
+                        <list reference="../c"/>
+                    </targets>
+                    <credentialsId></credentialsId>
+                </com.cloudbees.plugins.deployer.impl.amazon.HostImpl>
+            </hosts>
+        </com.cloudbees.plugins.deployer.DeployNowJobProperty>
+    </properties>
+    <scm class="hudson.scm.NullSCM"/>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers/>
+    <concurrentBuild>false</concurrentBuild>
+    <builders/>
+    <publishers/>
+    <buildWrappers/>
+    <task class="org.jenkinsci.plugins.durabletask.BourneShellScript" plugin="durable-task@1.10">
+        <script>for i in 0 1 2 3 4 5 6 7 8 9; do for j in 0 1 2 3 4 5 6 7 8 9; do sleep 5; echo &quot;$i$j%&quot;; done; done;</script>
+    </task>
+</com.cloudbees.jenkins.plugins.longrunning.LongRunningProject>

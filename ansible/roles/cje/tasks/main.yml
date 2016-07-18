@@ -33,12 +33,15 @@
   when: copy_license is defined
   register: license_result
 
-- name: Config is present
+- name: Configs are present
   copy:
     src: config.xml
-    dest: "{{ jenkins_home }}/config.xml"
+    dest: "{{ jenkins_home }}/{{ item }}"
     owner: jenkins
     group: jenkins
+  with_items:
+    - config.xml
+    - jobs
   register: config_result
 
 - name: Service is running

@@ -39,6 +39,16 @@
   when: copy_license is defined
   register: license_result
 
+- name: Configs are present
+  copy:
+    src: config.xml
+    dest: "{{ cjoc_home }}/{{ item }}"
+    owner: jenkins-oc
+    group: jenkins-oc
+  with_items:
+    - config.xml
+  register: config_result
+
 - name: Service is running
   service:
     name: jenkins-oc
@@ -49,7 +59,7 @@
   service:
     name: jenkins
     state: restarted
-  when: service_result is defined and license_result|changed and not service_result|changed
+  when: service_result is defined and (license_result|changed or config_result|changed) and not service_result|changed
 
 - debug:
     msg: "CloudBees Jenkins Operations Center is running. Please open http://{{ ansible_hostname }}:8888"

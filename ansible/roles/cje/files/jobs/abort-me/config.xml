@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <com.cloudbees.plugins.deployer.DeployNowJobProperty plugin="deployer-framework@1.1">
+            <oneClickDeploy>false</oneClickDeploy>
+            <hosts>
+                <com.cloudbees.plugins.deployer.impl.amazon.HostImpl plugin="cloudbees-aws-deployer@1.15">
+                    <targets class="java.util.Collections$UnmodifiableRandomAccessList" resolves-to="java.util.Collections$UnmodifiableList">
+                        <c class="list"/>
+                        <list reference="../c"/>
+                    </targets>
+                    <credentialsId></credentialsId>
+                </com.cloudbees.plugins.deployer.impl.amazon.HostImpl>
+            </hosts>
+        </com.cloudbees.plugins.deployer.DeployNowJobProperty>
+    </properties>
+    <scm class="hudson.scm.NullSCM"/>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers/>
+    <concurrentBuild>false</concurrentBuild>
+    <builders>
+        <hudson.tasks.Shell>
+            <command>echo &quot;Step 1&quot;</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+            <command>sleep 60
+                echo &quot;Step 2&quot;</command>
+        </hudson.tasks.Shell>
+        <hudson.tasks.Shell>
+            <command>sleep 300
+                echo &quot;Step 3&quot;</command>
+        </hudson.tasks.Shell>
+    </builders>
+    <publishers/>
+    <buildWrappers/>
+</project>

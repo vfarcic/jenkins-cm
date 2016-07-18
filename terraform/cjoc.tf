@@ -10,6 +10,13 @@ resource "aws_security_group" "cjoc" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port = 35464
+    to_port = 35464
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port = 0
     to_port = 0

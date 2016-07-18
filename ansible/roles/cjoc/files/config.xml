@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <hudson>
     <disabledAdministrativeMonitors/>
-    <version>1.0</version>
-    <numExecutors>0</numExecutors>
+    <version>1.625.18.5 (CloudBees Jenkins Operations Center 1.8)</version>
+    <numExecutors>2</numExecutors>
     <mode>NORMAL</mode>
     <useSecurity>true</useSecurity>
     <authorizationStrategy class="hudson.security.AuthorizationStrategy$Unsecured"/>
@@ -16,6 +16,7 @@
     <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
     <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
     <clouds/>
+    <quietPeriod>5</quietPeriod>
     <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
     <views>
         <hudson.model.AllView>
@@ -25,6 +26,20 @@
             <filterQueue>false</filterQueue>
             <properties class="hudson.model.View$PropertyList"/>
         </hudson.model.AllView>
+        <com.cloudbees.opscenter.analytics.view.BuildAnalyticsView plugin="operations-center-analytics@1.8.100">
+            <owner class="hudson" reference="../../.."/>
+            <name>Build Analytics</name>
+            <filterExecutors>false</filterExecutors>
+            <filterQueue>false</filterQueue>
+            <properties class="hudson.model.View$PropertyList"/>
+        </com.cloudbees.opscenter.analytics.view.BuildAnalyticsView>
+        <com.cloudbees.opscenter.analytics.view.PerformanceAnalyticsView plugin="operations-center-analytics@1.8.100">
+            <owner class="hudson" reference="../../.."/>
+            <name>Performance Analytics</name>
+            <filterExecutors>false</filterExecutors>
+            <filterQueue>false</filterQueue>
+            <properties class="hudson.model.View$PropertyList"/>
+        </com.cloudbees.opscenter.analytics.view.PerformanceAnalyticsView>
     </views>
     <primaryView>All</primaryView>
     <slaveAgentPort>35464</slaveAgentPort>

@@ -26,14 +26,14 @@ variable "ha" {
 }
 variable "cjoc" {
   default = {
-    instance_type = "t1.micro"
+    instance_type = "m3.medium"
     count = "2"
     port = "8888"
   }
 }
 variable "cje" {
   default = {
-    instance_type = "t1.micro"
+    instance_type = "m3.medium"
     count = "2"
     port = "8080"
   }
@@ -41,7 +41,7 @@ variable "cje" {
 
 variable "agent" {
   default = {
-    instance_type = "t1.micro"
+    instance_type = "m3.medium"
     count = "2"
     jnlp_port = "35464"
     executors = "2"
