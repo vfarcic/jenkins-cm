@@ -20,8 +20,8 @@ variable "region" {
 variable "ha" {
   default = {
     instance_type = "t1.micro"
-    cjoc_port = "80"
-    cje_port = "8080"
+    cjoc_port     = "80"
+    cje_port      = "8080"
   }
 }
 variable "cjoc" {
@@ -35,16 +35,16 @@ variable "cjoc" {
 variable "cje" {
   default = {
     instance_type = "m3.medium"
-    count = "2"
-    port = "8080"
+    count         = "2"
+    port          = "8080"
   }
 }
 
 variable "agent" {
   default = {
     instance_type = "m3.medium"
-    count = "2"
-    jnlp_port = "35464"
-    executors = "2"
+    count         = "2"
+    jnlp_port     = "35464"
+    executors     = "2"
   }
 }

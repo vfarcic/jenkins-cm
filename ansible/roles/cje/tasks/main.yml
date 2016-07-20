@@ -35,7 +35,7 @@
 
 - name: Configs are present
   copy:
-    src: config.xml
+    src: "{{ item }}"
     dest: "{{ jenkins_home }}/{{ item }}"
     owner: jenkins
     group: jenkins
