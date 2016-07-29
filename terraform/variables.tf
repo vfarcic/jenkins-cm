@@ -1,8 +1,5 @@
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-variable "cje_ami_id" {
-  default = "unknown"
-}
 variable "cjoc_ami_id" {
   default = "unknown"
 }
@@ -15,7 +12,7 @@ variable "agent_ami_id" {
 variable "ssh_user" {}
 variable "ssh_pass" {}
 variable "region" {
-  default = "us-west-2"
+  default = "us-east-1"
 }
 variable "ha" {
   default = {
@@ -30,13 +27,6 @@ variable "cjoc" {
     count              = "2"
     port               = "8888"
     client_master_port = "53624"
-  }
-}
-variable "cje" {
-  default = {
-    instance_type = "m3.medium"
-    count         = "2"
-    port          = "8080"
   }
 }
 

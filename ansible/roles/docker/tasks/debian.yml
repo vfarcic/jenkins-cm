@@ -1,0 +1,25 @@
+- name: Debian add Docker repository and update apt cache
+  apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    update_cache: yes
+    state: present
+  tags: [docker]
+
+- name: Debian Docker is present
+  apt:
+    name: docker-engine
+    state: latest
+    force: yes
+  tags: [docker]
+
+- name: User is added to the docker group
+  user:
+    name: ubuntu
+    group: docker
+  register: user_result
+
+- name: Debian Docker service is restarted
+  service:
+    name: docker
+    state: restarted
+  when: user_result|changed

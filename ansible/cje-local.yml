@@ -2,9 +2,13 @@
   vars:
     - jenkins_home: /var/lib/jenkins/
     - jenkins_port: 8080
+    - deployment: Docker
+    - project: cje
   roles:
     - common
-    - java
+    - { role: java, when: "deployment == 'package'" }
+    - { role: docker, when: "deployment == 'Docker'" }
+    - { role: docker-compose, when: "deployment == 'Docker'" }
     - cje
     - users
     - nfs

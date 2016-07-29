@@ -2,7 +2,7 @@
   "variables": {
     "aws_access_key": "{{env `TF_VAR_aws_access_key`}}",
     "aws_secret_key": "{{env `TF_VAR_aws_secret_key`}}",
-    "ami_id": "ami-a9de9c99"
+    "ami_id": "ami-7b386c11"
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -11,22 +11,24 @@
     "region": "us-east-1",
     "source_ami": "{{user `ami_id`}}",
     "instance_type": "t1.micro",
-    "ssh_username": "root",
-    "ami_name": "cje-centos",
+    "ssh_username": "ubuntu",
+    "ami_name": "cje-docker",
     "ssh_pty" : "true",
     "force_deregister": true
   }],
   "provisioners": [{
     "type": "shell",
     "inline": [
-      "sleep 30",
-      "sudo yum install -y epel-release",
-      "sudo yum install -y ansible"
+      "sudo apt-get update",
+      "sudo apt-get install -y software-properties-common",
+      "sudo apt-add-repository -y ppa:ansible/ansible",
+      "sudo apt-get update",
+      "sudo apt-get install -y ansible"
     ]
   }, {
     "type": "ansible-local",
     "playbook_file": "../ansible/cje-local.yml",
     "playbook_dir": "../ansible",
-    "extra_arguments": "--extra-vars \"copy_license=yes jenkins_home=/data/jenkins deployment=package group=wheel\""
+    "extra_arguments": "--extra-vars \"copy_license=yes jenkins_home=/data/jenkins\""
   }]
 }

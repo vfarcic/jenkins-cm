@@ -6,5 +6,7 @@
     - jenkins_port: 8080
   roles:
     - common
-    - java
+    - { role: java, when: "deployment == 'package' }
+    - { role: docker, when: "deployment == 'Docker' }
+    - { role: docker-compose, when: "deployment == 'Docker' }
     - cje

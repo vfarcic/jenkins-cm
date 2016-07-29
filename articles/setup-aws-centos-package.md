@@ -66,7 +66,7 @@ packer build -machine-readable packer-cje-centos.json | tee packer-cje-centos.lo
 ```bash
 export TF_VAR_cje_ami_id=$(grep 'artifact,0,id' packer-cje-centos.log | cut -d, -f6 | cut -d: -f2)
 
-terraform apply -target aws_instance.cje
+terraform apply -target aws_instance.cje_centos -var "cje_instance_type=m3.medium"
 ```
 
 ### SSH
@@ -80,7 +80,7 @@ ssh $TF_VAR_ssh_user@$(terraform output cje_public_ip_1)
 ### Destroy
 
 ```bash
-terraform destroy -force -target aws_instance.cje
+terraform destroy -force -target aws_instance.cje_centos
 ```
 
 CJOC

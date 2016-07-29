@@ -1,0 +1,14 @@
+- name: Directory is present
+  file:
+    path: "/composes/cje"
+    state: directory
+
+- name: Compose is present
+  template:
+    src: docker-compose.yml
+    dest: "/composes/cje/docker-compose.yml"
+
+- name: Containers are running
+  command: docker-compose up -d
+  args:
+    chdir: "/composes/cje"

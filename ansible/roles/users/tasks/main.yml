@@ -3,7 +3,7 @@
     name: "{{ user }}"
     password: "{{ password }}"
     shell: /bin/bash
-    group: wheel
+    group: "{{ group }}"
     append: yes
 
 - name: User is password-less sudoer

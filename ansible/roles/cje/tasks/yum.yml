@@ -1,14 +1,3 @@
-#- name: Ports are open
-#  iptables:
-#    chain: INPUT
-#    source: 0.0.0.0/0
-#    destination: 0.0.0.0/0
-#    protocol: tcp
-#    destination_port: 8080
-#    match: state
-#    ctstate: NEW
-#    jump: ACCEPT
-
 - name: Package is downloaded
   get_url:
     url: http://nectar-downloads.cloudbees.com/nectar/rpm/jenkins.repo
@@ -23,3 +12,15 @@
   yum:
     name: jenkins
     update_cache: yes
+
+- name: Update Jenkins home
+  lineinfile:
+    dest: /etc/sysconfig/jenkins
+    regexp: ^JENKINS_HOME=
+    line: JENKINS_HOME="{{ jenkins_home }}"
+
+- name: Update Jenkins port
+  lineinfile:
+    dest: /etc/sysconfig/jenkins
+    regexp: ^JENKINS_PORT=
+    line: JENKINS_PORT="{{ jenkins_port }}"
