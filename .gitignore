@@ -8,3 +8,4 @@ license.xml
 *.pem
 *.tfstate*
 secret*
+/docker/data

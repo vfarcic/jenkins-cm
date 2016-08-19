@@ -2,7 +2,7 @@ version: '2'
 
 services:
 
-  registry:
+  cje:
     container_name: cje
     image: cloudbees/jenkins-enterprise
     ports:

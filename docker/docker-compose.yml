@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+
+  cje:
+    container_name: cje
+    image: cloudbees/jenkins-enterprise
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - $PWD/data/cje:/var/jenkins_home
+
+  cjoc:
+    container_name: cjoc
+    image: cloudbees/jenkins-operations-center
+    ports:
+      - 8080:8080
+      - 50000:50000
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - $PWD/data/cjoc:/var/jenkins_home
+
+  agent:
+    container_name: jenkins_agent
+    image: vfarcic/jenkins-swarm-agent
+    environment:
+      - COMMAND_OPTIONS=-master http://${MASTER_IP}:8080 -labels 'docker' -executors 5 -username admin -password admin
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /workspace:/workspace
+      - ${HOME}/.docker/machine/machines:/machines
+
+  es:
+    container_name: es
+    image: elasticsearch:1
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  kibana:
+    container_name: kibana
+    environment:
+     - ELASTICSEARCH_URL=http://${ES_IP}:9200
+    image: kibana:4.0
+    volumes:
+      - $PWD/data/es:/usr/share/elasticsearch/data
+    ports:
+      - 5601:5601
