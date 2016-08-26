@@ -22,6 +22,15 @@ services:
     volumes:
       - $PWD/data/cjoc:/var/jenkins_home
 
+  jenkins:
+    container_name: jenkins
+    image: jenkins
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - $PWD/data/jenkins:/var/jenkins_home
+
   agent:
     container_name: jenkins_agent
     image: vfarcic/jenkins-swarm-agent
@@ -50,8 +59,11 @@ services:
   logstash:
     container_name: logstash
     image: vfarcic/logstash-jenkins-analytics
+    volumes:
+      - /var/log/docker.events:/docker.events
     ports:
       - 5678:5678
+      - 31311:31311
 
   gitlab:
     container_name: gitlab

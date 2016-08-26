@@ -36,6 +36,8 @@ docker-compose up -d elasticsearch
 
 # https://cloudbees.atlassian.net/browse/CJP-5066
 
+docker-machine ssh elk "nohup curl --unix-socket /var/run/docker.sock http:/events >/var/log/docker.events &"
+
 cd logstash
 
 docker build -t vfarcic/logstash-jenkins-analytics .
@@ -51,6 +53,21 @@ docker-compose logs -f
 open http://$(docker-machine ip elk):5601
 ```
 
+Jenkins
+-------
+
+```bash
+docker-machine create -d virtualbox jenkins
+
+eval $(docker-machine env jenkins)
+
+docker-compose up -d jenkins
+
+open http://$(docker-machine ip jenkins):8080
+```
+
+* Install the Swarm plugin
+
 Agent
 -----
 
@@ -59,7 +76,7 @@ docker-machine create -d virtualbox agent
 
 eval $(docker-machine env agent)
 
-export MASTER_IP=$(docker-machine ip cje-1)
+export MASTER_IP=$(docker-machine ip jenkins)
 
 docker-compose up -d agent
 ```
@@ -98,7 +115,7 @@ node('docker') {
     git 'https://github.com/vfarcic/go-demo.git'
 
     stage 'Unit'
-    sh "docker-compose -f docker-compose-test.yml run --rm unit"
+    sh "docker-compose -f docker-compose-test.yml run --rm unit | tee unit.out"
     sh "docker build -t go-demo ."
     sh "cat unit.out | grep coverage | cut -d' ' -f2- | cut -d'%' -f1  | tr -d '\n' >coverage.out"
     coverage = readFile "coverage.out"
@@ -106,27 +123,15 @@ node('docker') {
     stage 'analytics'
     sh "git rev-list HEAD -n 1 | tr -d '\n' >rev.tmp"
     rev = readFile 'rev.tmp'
-/*
-    sh "curl -XPOST -d '{" +
-      "\"@timestamp\": \"2016-08-19T22:55:24.593+0000\", " +
-      "\"type\": \buildinfo\", " +
+
+    sh "curl -XPUT -d '{" +
+      "\"action\": \"build\", " +
       "\"job_name\": \"${env.JOB_NAME}\", " +
       "\"job_id\": ${env.BUILD_ID}, " +
       "\"rev\": \"${rev}\", " +
       "\"coverage\": ${coverage} " +
       "}' " +
-      "http://192.168.99.102:9200/builds-20160819/buildinfo/${env.JOB_NAME}-${env.BUILD_ID}"
-*/
-    writeFile(
-      "logstash.out",
-      "{" +
-        "\"type\": \buildinfo\", " +
-        "\"job_name\": \"${env.JOB_NAME}\", " +
-        "\"job_id\": ${env.BUILD_ID}, " +
-        "\"rev\": \"${rev}\", " +
-        "\"coverage\": ${coverage} " +
-      "}"
-    )
+      "http://192.168.99.100:31311/"
 }
 ```
 
@@ -149,6 +154,10 @@ type: "git" AND object_kind: "issue" AND repository.name: "test-1"
 type: "git" AND object_kind: "issue" AND object_attributes.state: "opened" AND repository.name: "test-1"
 
 type: "git" AND object_kind: "issue" AND object_attributes.state: "closed" AND repository.name: "test-1"
+
+type: "docker"
+
+type: "docker" AND (status: "start" OR status: "destroy")
 
 type: "run" AND parent.fullName: "test-1"
 

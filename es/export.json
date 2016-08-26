@@ -1,0 +1,314 @@
+[
+  {
+    "_id": "test-1",
+    "_type": "dashboard",
+    "_source": {
+      "title": "test-1",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"test-1-git\",\"panelIndex\":1,\"row\":3,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues\",\"panelIndex\":2,\"row\":5,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":8,\"id\":\"test-1-issues-closed\",\"panelIndex\":3,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues-list\",\"panelIndex\":4,\"row\":1,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":7,\"id\":\"test-1-issues-opened\",\"panelIndex\":5,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":5,\"id\":\"test-1-issues-total\",\"panelIndex\":6,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"id\":\"docker-start-destroy\",\"type\":\"visualization\",\"panelIndex\":7,\"size_x\":4,\"size_y\":2,\"col\":9,\"row\":3},{\"id\":\"docker-table\",\"type\":\"visualization\",\"panelIndex\":8,\"size_x\":4,\"size_y\":2,\"col\":9,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-7\":{\"vis\":{\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues",
+    "_type": "search",
+    "_source": {
+      "title": "test-1-issues",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"git\\\" AND object_kind: \\\"issue\\\" AND repository.name: \\\"test-1\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-git",
+    "_type": "search",
+    "_source": {
+      "title": "test-1-git",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"git\\\" AND object_kind: \\\"push\\\" AND repository.name: \\\"test-1\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "git",
+    "_type": "search",
+    "_source": {
+      "title": "git",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"git\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-opened",
+    "_type": "search",
+    "_source": {
+      "title": "test-1-issues-opened",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"git\\\" AND object_kind: \\\"issue\\\" AND object_attributes.state: \\\"opened\\\" AND repository.name: \\\"test-1\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-closed",
+    "_type": "search",
+    "_source": {
+      "title": "test-1-issues-closed",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"git\\\" AND object_kind: \\\"issue\\\" AND object_attributes.state: \\\"closed\\\" AND repository.name: \\\"test-1\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "docker-start",
+    "_type": "search",
+    "_source": {
+      "title": "docker-start",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"docker\\\" AND status: \\\"start\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "docker",
+    "_type": "search",
+    "_source": {
+      "title": "docker",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"type: \\\"docker\\\"\"}}}"
+      }
+    }
+  },
+  {
+    "_id": "docker-start-destroy",
+    "_type": "search",
+    "_source": {
+      "title": "docker-start-destroy",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"docker\\\" AND (status: \\\"start\\\" OR status: \\\"destroy\\\")\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-issues",
+      "visState": "{\"title\":\"test-1-issues\",\"type\":\"line\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"drawLinesBetweenPoints\":true,\"interpolate\":\"linear\",\"radiusRatio\":9,\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"showCircles\":true,\"smoothLines\":true,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"object_attributes.state.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-issues",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-list",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-issues-list",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"@timestamp\",\"customLabel\":\"time\"}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"object_attributes.title.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"title\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"object_attributes.state.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\",\"customLabel\":\"status\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-issues",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-closed",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-issues-closed",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"metric\",\"params\":{\"handleNoResults\":true,\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"object_attributes.id\",\"customLabel\":\"closed\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-issues-closed",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-opened",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-issues-opened",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"metric\",\"params\":{\"handleNoResults\":true,\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"object_attributes.id\",\"customLabel\":\"opened\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-issues-opened",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-issues-total",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-issues-total",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"metric\",\"params\":{\"handleNoResults\":true,\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"cardinality\",\"schema\":\"metric\",\"params\":{\"field\":\"object_attributes.id\",\"customLabel\":\"total\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-issues",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "docker",
+    "_type": "visualization",
+    "_source": {
+      "title": "docker",
+      "visState": "{\"title\":\"docker\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "docker",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "docker-start-destroy",
+    "_type": "visualization",
+    "_source": {
+      "title": "docker-start-destroy",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "docker-start-destroy",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-git",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-git",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{\"customLabel\":\"push\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"total_commits_count\",\"customLabel\":\"commit\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-git",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "docker-table",
+    "_type": "visualization",
+    "_source": {
+      "title": "docker-table",
+      "visState": "{\"title\":\"docker-table\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"@timestamp\",\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"Actor.Attributes.image.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"image\"}},{\"id\":\"4\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"action\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "docker-start-destroy",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  }
+]
