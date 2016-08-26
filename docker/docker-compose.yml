@@ -32,9 +32,9 @@ services:
       - /workspace:/workspace
       - ${HOME}/.docker/machine/machines:/machines
 
-  es:
-    container_name: es
-    image: elasticsearch:1
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch
     ports:
       - 9200:9200
       - 9300:9300
@@ -42,9 +42,23 @@ services:
   kibana:
     container_name: kibana
     environment:
-     - ELASTICSEARCH_URL=http://${ES_IP}:9200
-    image: kibana:4.0
-    volumes:
-      - $PWD/data/es:/usr/share/elasticsearch/data
+     - ELASTICSEARCH_URL=http://elasticsearch:9200
+    image: kibana
     ports:
       - 5601:5601
+
+  logstash:
+    container_name: logstash
+    image: vfarcic/logstash-jenkins-analytics
+    ports:
+      - 5678:5678
+
+  gitlab:
+    container_name: gitlab
+    image:
+      gitlab/gitlab-ce
+    ports:
+      - 8080:80
+    volumes:
+      - $PWD/data/gitlab/config:/etc/gitlab
+      - $PWD/data/gitlab/data:/var/opt/gitlab

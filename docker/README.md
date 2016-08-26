@@ -24,30 +24,31 @@ docker-compose up -d cjoc
 open http://$(docker-machine ip cjoc-1):8080
 ```
 
-Agent
------
+ELK
+---
 
 ```bash
+docker-machine create -d virtualbox elk
 
-```
+eval $(docker-machine env elk)
 
-ES
---
+docker-compose up -d elasticsearch
 
-```bash
-docker-machine create -d virtualbox es
+# https://cloudbees.atlassian.net/browse/CJP-5066
 
-eval $(docker-machine env es)
+cd logstash
 
-docker-compose up -d es
+docker build -t vfarcic/logstash-jenkins-analytics .
 
-export ES_IP=$(docker-machine ip es)
+cd ..
+
+docker-compose up -d logstash
 
 docker-compose up -d kibana
 
-open http://${ES_IP}:5601
+docker-compose logs -f
 
-# https://cloudbees.atlassian.net/browse/CJP-5066
+open http://$(docker-machine ip elk):5601
 ```
 
 Agent
@@ -61,6 +62,15 @@ eval $(docker-machine env agent)
 export MASTER_IP=$(docker-machine ip cje-1)
 
 docker-compose up -d agent
+```
+
+GitLab
+------
+
+```bash
+docker-compose up -d gitlab
+
+open http://localhost:8080
 ```
 
 Job
@@ -132,6 +142,14 @@ Kibana
 ### Discover
 
 ```
+type: "git" AND object_kind: "push" AND repository.name: "test-1"
+
+type: "git" AND object_kind: "issue" AND repository.name: "test-1"
+
+type: "git" AND object_kind: "issue" AND object_attributes.state: "opened" AND repository.name: "test-1"
+
+type: "git" AND object_kind: "issue" AND object_attributes.state: "closed" AND repository.name: "test-1"
+
 type: "run" AND parent.fullName: "test-1"
 
 _type: "buildinfo" AND job_name: "test-1"
@@ -141,9 +159,9 @@ _type: "buildinfo" AND job_name: "test-1"
 
 ```bash
 docker run --rm vfarcic/elastic-dump \
-    --input=http://$(docker-machine ip es):9200/kibana-4-cloudbees \
+    --input=http://$(docker-machine ip elk):9200/.kibana \
     --output=$ \
-    --type=data >es-kibana.json
+    --type=data >es/kibana.json
 ```
 
 ### Visualizations
