@@ -36,7 +36,7 @@ docker-compose up -d elasticsearch
 
 # https://cloudbees.atlassian.net/browse/CJP-5066
 
-docker-machine ssh elk "nohup curl --unix-socket /var/run/docker.sock http:/events >/var/log/docker.events &"
+docker-machine ssh elk "nohup curl --unix-socket /var/run/docker.sock http:/events >>$PWD/data/docker.events &"
 
 cd logstash
 
@@ -79,6 +79,16 @@ eval $(docker-machine env agent)
 export MASTER_IP=$(docker-machine ip jenkins)
 
 docker-compose up -d agent
+
+docker-machine ssh agent "nohup curl --unix-socket /var/run/docker.sock http:/events >>$PWD/data/docker.events &"
+
+cd logstash
+
+docker build -t vfarcic/logstash-jenkins-analytics .
+
+cd ..
+
+docker-compose up -d logstash
 ```
 
 GitLab
@@ -112,26 +122,46 @@ curl -XPUT http://192.168.99.102:9200/kibana-4-cloudbees -d '
 ```groovy
 node('docker') {
 
+  def status = "success"
+
+  try {
     git 'https://github.com/vfarcic/go-demo.git'
 
-    stage 'Unit'
+    stage "Unit"
     sh "docker-compose -f docker-compose-test.yml run --rm unit | tee unit.out"
-    sh "docker build -t go-demo ."
-    sh "cat unit.out | grep coverage | cut -d' ' -f2- | cut -d'%' -f1  | tr -d '\n' >coverage.out"
-    coverage = readFile "coverage.out"
+    sh "cat unit.out | grep coverage | cut -d' ' -f2- | cut -d'%' -f1  | tr -d '\n' >result.out"
+    coverage = readFile "result.out"
 
-    stage 'analytics'
-    sh "git rev-list HEAD -n 1 | tr -d '\n' >rev.tmp"
-    rev = readFile 'rev.tmp'
+    stage "Build"
+    sh "docker build -t vfarcic/go-demo . | tee build.out"
+    sh "cat build.out | grep 'Successfully built' | cut -d' ' -f3- | tr -d '\n' >result.out"
+    artifact_id = readFile "result.out"
 
-    sh "curl -XPUT -d '{" +
-      "\"action\": \"build\", " +
-      "\"job_name\": \"${env.JOB_NAME}\", " +
-      "\"job_id\": ${env.BUILD_ID}, " +
-      "\"rev\": \"${rev}\", " +
-      "\"coverage\": ${coverage} " +
-      "}' " +
-      "http://192.168.99.100:31311/"
+    stage "Deploy"
+    sh "docker-compose up -d"
+
+  } catch(e) {
+    status = "failure"
+  }
+
+  stage 'analytics'
+  sh "git rev-list HEAD -n 1 | tr -d '\n' >result.out"
+  rev_id = readFile 'result.out'
+
+  sh "curl -XPUT -d '{" +
+    "\"action\": \"build\", " +
+    "\"status\": \"${status}\", " +
+    "\"job_name\": \"${env.JOB_NAME}\", " +
+    "\"build_id\": ${env.BUILD_ID}, " +
+    "\"rev_id\": \"${rev_id}\", " +
+    "\"artifact_id\": \"${artifact_id}\", " +
+    "\"coverage\": ${coverage} " +
+    "}' " +
+    "http://192.168.99.100:31311/"
+
+  if (status == "failure") {
+    error "There was an error"
+  }
 }
 ```
 
@@ -157,11 +187,11 @@ type: "git" AND object_kind: "issue" AND object_attributes.state: "closed" AND r
 
 type: "docker"
 
-type: "docker" AND (status: "start" OR status: "destroy")
+type: "docker" AND (status: "create" OR status: "destroy")
 
 type: "run" AND parent.fullName: "test-1"
 
-_type: "buildinfo" AND job_name: "test-1"
+type: "jenkins" AND action: "build" AND job_name: "test-1"
 ```
 
 ### Export

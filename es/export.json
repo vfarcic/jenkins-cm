@@ -6,9 +6,9 @@
       "title": "test-1",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"col\":1,\"id\":\"test-1-git\",\"panelIndex\":1,\"row\":3,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues\",\"panelIndex\":2,\"row\":5,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":8,\"id\":\"test-1-issues-closed\",\"panelIndex\":3,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues-list\",\"panelIndex\":4,\"row\":1,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":7,\"id\":\"test-1-issues-opened\",\"panelIndex\":5,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":5,\"id\":\"test-1-issues-total\",\"panelIndex\":6,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"id\":\"docker-start-destroy\",\"type\":\"visualization\",\"panelIndex\":7,\"size_x\":4,\"size_y\":2,\"col\":9,\"row\":3},{\"id\":\"docker-table\",\"type\":\"visualization\",\"panelIndex\":8,\"size_x\":4,\"size_y\":2,\"col\":9,\"row\":1}]",
+      "panelsJSON": "[{\"col\":1,\"id\":\"test-1-git\",\"panelIndex\":1,\"row\":3,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues\",\"panelIndex\":2,\"row\":5,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":8,\"id\":\"test-1-issues-closed\",\"panelIndex\":3,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"test-1-issues-list\",\"panelIndex\":4,\"row\":1,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":7,\"id\":\"test-1-issues-opened\",\"panelIndex\":5,\"row\":1,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":5,\"id\":\"test-1-issues-total\",\"panelIndex\":6,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":9,\"id\":\"docker-start-destroy\",\"panelIndex\":7,\"row\":3,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":9,\"id\":\"docker-table\",\"panelIndex\":8,\"row\":1,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"col\":5,\"id\":\"test-1-jenkins-build\",\"panelIndex\":9,\"row\":3,\"size_x\":4,\"size_y\":2,\"type\":\"visualization\"},{\"id\":\"test-1-coverage\",\"type\":\"visualization\",\"panelIndex\":10,\"size_x\":4,\"size_y\":2,\"col\":5,\"row\":5}]",
       "optionsJSON": "{\"darkTheme\":true}",
-      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-7\":{\"vis\":{\"legendOpen\":false}}}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-7\":{\"vis\":{\"legendOpen\":false}},\"P-9\":{\"vis\":{\"legendOpen\":false}},\"P-6\":{\"spy\":{\"mode\":{\"name\":null,\"fill\":false}}}}",
       "version": 1,
       "timeRestore": false,
       "kibanaSavedObjectMeta": {
@@ -157,6 +157,26 @@
     }
   },
   {
+    "_id": "test-1-jenkins-build",
+    "_type": "search",
+    "_source": {
+      "title": "test-1-jenkins-build",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"jenkins\\\" AND action: \\\"build\\\" AND job_name: \\\"test-1\\\"\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
     "_id": "docker-start-destroy",
     "_type": "search",
     "_source": {
@@ -172,7 +192,7 @@
       ],
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"docker\\\" AND (status: \\\"start\\\" OR status: \\\"destroy\\\")\",\"analyze_wildcard\":true}}}"
+        "searchSourceJSON": "{\"index\":\"logstash-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"type: \\\"docker\\\" AND (status: \\\"create\\\" OR status: \\\"destroy\\\")\",\"analyze_wildcard\":true}}}"
       }
     }
   },
@@ -252,14 +272,14 @@
     }
   },
   {
-    "_id": "docker",
+    "_id": "test-1-jenkins-build",
     "_type": "visualization",
     "_source": {
-      "title": "docker",
-      "visState": "{\"title\":\"docker\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
+      "title": "test-1-jenkins-build",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"status.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "docker",
+      "savedSearchId": "test-1-jenkins-build",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"
@@ -297,14 +317,44 @@
     }
   },
   {
+    "_id": "docker",
+    "_type": "visualization",
+    "_source": {
+      "title": "docker",
+      "visState": "{\"title\":\"docker\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "docker",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
     "_id": "docker-table",
     "_type": "visualization",
     "_source": {
       "title": "docker-table",
-      "visState": "{\"title\":\"docker-table\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"@timestamp\",\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"Actor.Attributes.image.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"image\"}},{\"id\":\"4\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"action\"}}],\"listeners\":{}}",
+      "visState": "{\"title\":\"docker-table\",\"type\":\"table\",\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMeticsAtAllLevels\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"@timestamp\",\"customLabel\":\"time\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"from.raw\",\"size\":100,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"image\"}},{\"id\":\"4\",\"type\":\"terms\",\"schema\":\"bucket\",\"params\":{\"field\":\"Action.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"action\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
       "savedSearchId": "docker-start-destroy",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "test-1-coverage",
+    "_type": "visualization",
+    "_source": {
+      "title": "test-1-coverage",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"metric\",\"params\":{\"handleNoResults\":true,\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"coverage\",\"customLabel\":\"coverage\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "test-1-jenkins-build",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"

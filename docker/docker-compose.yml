@@ -60,7 +60,7 @@ services:
     container_name: logstash
     image: vfarcic/logstash-jenkins-analytics
     volumes:
-      - /var/log/docker.events:/docker.events
+      - $PWD/data/docker.events:/docker.events
     ports:
       - 5678:5678
       - 31311:31311
