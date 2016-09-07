@@ -24,7 +24,7 @@ services:
 
   jenkins:
     container_name: jenkins
-    image: jenkins
+    image: jenkins:alpine
     ports:
       - 8080:8080
       - 50000:50000
@@ -74,3 +74,11 @@ services:
     volumes:
       - $PWD/data/gitlab/config:/etc/gitlab
       - $PWD/data/gitlab/data:/var/opt/gitlab
+
+  svn:
+    container_name: svn
+    image: erikxiv/subversion
+    environment:
+      - SVN_REPONAME=repos
+    ports:
+      - 3690:3690
